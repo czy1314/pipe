@@ -1,0 +1,95 @@
+
+
+<div id="shenf">
+
+	<h1>身份验证信息</h1>
+	<table class="form_table shenf">	
+		<tbody>		
+		
+		<tr>
+			<td>				
+				<div  class="upload_self center">
+					<p>手持身份证照片</p>
+					<div class="photo width14">
+						<div>
+						<img id="userphoto_img" src="<!--{if $self.userphoto}-->{$site_url}/{$self.userphoto}<!--{else}-->{$default_user_img}<!--{/if}-->" alt="学生证照片" ectype="userphoto]" height="210" width="210" />
+						</div>
+						
+						<div class="upload_btn">
+							<span class="file1">
+								<input id="userphoto" name="userphoto" type="hidden" />
+							</span>
+							<div class="notice">&nbsp;</div>  
+							<div style="text-align:center;height:20px;margin-bottom:70px;position:relative;top:50px;" class="school_card notice"></div> 
+	
+							<div class="upload_con" id="userphoto_uploader">
+								
+								<div class="upload_wrap">
+									<ul>    
+																				
+										<li style="float:none;margin:auto;" ><iframe src="index.php?app=comupload&act=view_iframe&id={$id}&belong={$belong}&instance=userphoto" width="100%" height="30" scrolling="no" frameborder="0"></iframe></li>                                               
+									</ul>
+								   
+									<div class="upload_progress" id="userphoto_upload_progress"></div>
+									<div class="upload_txt">
+										<span>支持JPEG和png,不支持GIF动画图片,上传图片大小不能超过1M</span>
+									</div>
+
+								</div>
+								<!-- <div class="upload_con_bottom"></div> -->
+							</div>
+						</div>							
+							
+						{$userphoto_images_upload}
+					</div>
+				</div>		
+			</td>
+			<td>
+				
+			<div  class="upload_self center">
+				<p>身份证正反面照片</p>
+				<div class="photo width14">
+					
+					<div class="photo width14">
+						<div>
+							<img  id="card_img_img" src="<!--{if $self.card_img}-->{$site_url}/{$self.card_img}<!--{else}-->{$default_user_img}<!--{/if}-->" alt="身份证正反面照片" ectype="card_img]" height="210" width="210" />
+						</div>
+						
+						<div class="upload_btn">
+							<span class="file1">
+								<input id="card_img" name="card_img" type="hidden" />
+							</span>
+							<div class="notice">&nbsp;</div>  
+							<div style="text-align:center;height:20px;margin-bottom:70px;position:relative;top:50px;" class="school_card notice"></div> 
+	
+							<div class="upload_con" id="card_img_uploader">
+								
+								<div class="upload_wrap">
+									<ul>    																				
+										<li style="float:none;margin:auto;" ><iframe src="index.php?app=comupload&act=view_iframe&id={$id}&belong={$belong}&instance=card_img" width="100%" height="30" scrolling="no" frameborder="0"></iframe></li>                                               
+									</ul>
+								   
+									<div class="upload_progress" id="card_img_upload_progress"></div>
+									<div class="upload_txt">
+										<span>支持JPEG和png,不支持GIF动画图片,上传图片大小不能超过1M</span>
+									</div>
+
+								</div>
+								<!-- <div class="upload_con_bottom"></div> -->
+							</div>
+						</div>							
+							
+						{$card_img_images_upload}
+					</div>
+				</div>
+			</div>
+			</td>
+		</tr>
+		
+		</tbody>
+	</table>
+	
+	<iframe id="exec_target"   style="display:none;"  name="exec_target"></iframe> 
+	
+	
+</div>

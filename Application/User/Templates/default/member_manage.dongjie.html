@@ -1,0 +1,40 @@
+<script type="text/javascript">
+$(function(){
+    $('#cancel_button').click(function(){
+        DialogManager.close('dongjie_user');
+    });
+
+});
+</script>
+<div class="content1">
+<div id="warning"></div>
+<form method="post" action="index.php?app=member_manage&act=dongjie" target="seller_order">
+    
+  
+    <dl>
+       
+		<dd  style="margin-bottom:20px;">
+			<div class="li">
+			<input type="radio" name="is_pass" flag="is_pass"<!--{if $rec.rec_stage != -1} -->checked="checked"<!--{/if} --> id="d4" value="1" /> 
+			<label for="d4">冻结</label></div>
+			<div class="li"><input type="radio" <!--{if $rec.rec_stage == -1} -->checked="checked"<!--{/if} -->  name="is_pass" flag="is_pass" id="d5" value="0" /> 
+			<label for="d4">解冻</label></div>
+			
+		 </dd>
+		<dl>
+		    <dt>{$lang.operate_reason}:</dt>
+			<dd>			
+            <textarea id="remark_input" class="text" style="width:200px;" name="remark"></textarea>
+			</dd>
+		</dl>
+    </dl>
+	<input type="hidden" value="{$user_id}"  name="user_id" />
+	
+    <div class="btn" style="width:240px;display:block;margin:auto;">
+	
+        <input type="submit" id="confirm_button" class="btn1" value="{$lang.confirm}" />
+        <input type="button" id="cancel_button" class="btn2" value="{$lang.cancel}" />
+    </div>
+{$hidden_value}
+</form>
+</div>

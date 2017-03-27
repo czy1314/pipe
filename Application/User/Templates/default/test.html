@@ -1,0 +1,64 @@
+{include file=member.header.html}
+<div>
+
+    {$images_upload}
+    <script>
+	
+	    /* {
+		"file_type":"image/jpeg",
+		"file_size":"46811",
+		"file_name":"30G58PICYdg.jpg",
+		"file_path":"data/files/member/2403/comupload/201601211542097126.jpg",
+		"belong":"5",
+		"item_id":"2403",
+		"add_time":"1453333329",
+		"instance":"rec_image",
+		"file_id":"32"
+		} */
+	    function add_uploadedfile(file_data)
+		{
+			 $('#'+file_data.img_id).attr('src','<?php echo $this->_var['site_url']; ?>/'+ file_data.file_path);
+	   
+			
+			if (GOODS_SWFU.getStats().files_queued == 0) {
+				window.setTimeout(function() {
+					$('#uploader').hide();
+					$('#open_uploader').find('.show').attr('class', 'hide');
+				}, 4000);
+			}
+			
+		}
+    </script>
+  
+   <div class="upload_btn">
+                                    <div class="upload" id="open_uploader"><b class="hide">上传图片</b></div>
+                                    <div class="upload_con" id="uploader" style="display:none">
+                                        <div class="upload_con_top"></div>
+                                        <div class="upload_wrap">
+
+                                            <ul>
+                                                <li class="btn1">
+                                                <div id="divSwfuploadContainer">
+                                                    <div id="divButtonContainer">
+                                                        <span id="spanButtonPlaceholder"></span>
+                                                    </div>
+                                                </div>
+                                                </li>
+                                                <li><iframe src="index.php?app=comupload&act=view_iframe&id={$id}&belong={$belong}&instance=rec_image" width="86" height="30" scrolling="no" frameborder="0"></iframe></li>
+                                                <li id="open_remote" class="btn2">{$lang.rem_upload}</li>
+                                            </ul>
+                                            <div id="remote" class="upload_file" style="display:none">
+                                            <iframe src="index.php?app=comupload&act=view_remote&id={$id}&belong={$belong}&instance=goods_image" width="272" height="39" scrolling="no" frameborder="0"></iframe>
+                                            </div>
+                                            <div id="goods_upload_progress"></div>
+                                            <div class="upload_txt">
+                                                <span>{$lang.note_for_upload}</span>
+                                            </div>
+
+                                        </div>
+                                        <div class="upload_con_bottom"></div>
+                                    </div>
+                                </div>
+								
+</div>
+{include file=footer.html}

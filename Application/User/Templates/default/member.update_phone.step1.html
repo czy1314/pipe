@@ -1,0 +1,59 @@
+{include file=member.header.html}
+<style>
+.borline td { padding:10px 0px; }
+.ware_list th { text-align:left; }
+</style>
+<script type="text/javascript">
+
+$(function(){
+	var url = "{$site_url}/index.php?app=memberrec&act=ajax_get_code&ajax&step=1}";	
+	var data = {user_id:{$rec.user_id},step:1,phone_mob:$('#phone_mob').val()};
+	code($('#btn_code_get'),url,data);
+    
+});
+</script>
+<div class="content">
+    {include file=member.menu.html}
+    <div id="right">
+	{include file=member.curlocal.html}
+		<link type="text/css" rel="stylesheet" href="{res file=css/safety.css}"/>
+			<div class="security">
+				<h1>修改手机号</h1>
+				<div class="phonemod">
+					<img src="/images/security/01_03.png" alt="">
+					<form action="{url app=memberrec&act=step1}" method="post" id="form_update_phone_setp1">
+						<div class="original">
+						<!--{if $rec.phone_mob}--><label class="label">原手机号：</label>&nbsp;&nbsp;&nbsp;&nbsp;{$rec._phone_mob}<!--{/if}-->
+							
+							<input id="phone_mob" value="{$rec.phone_mob}" type="hidden">
+						</div>
+						<div class="verfy">
+							<label class="label">手机验证码：</label>
+							<input class="input_css flex-box text" id="code" placeholder="请输入验证码" maxlength="6" name="code" value="" type="text">
+							<a id="btn_code_get">获取验证码</a>
+							<p class="warning" id="w1"></p>
+						</div>
+						<div class="btns">
+							<label class="label">&nbsp;</label>
+							<input class="submit" value="确认" type="submit">
+						</div>
+					{$hidden_value}</form>
+					<a href="/appeal/0" class="service"><span style="color:#ff4000;">无法接验证码？通过客服修改手机号</span></a>
+				</div>
+			</div>
+
+				<div class="clear"></div>
+				<div class="adorn_right1"></div>
+				<div class="adorn_right2"></div>
+				<div class="adorn_right3"></div>
+				<div class="adorn_right4"></div>
+		</div>
+        <div class="clear"></div>
+    </div>
+</div>
+<script>
+
+
+
+</script>
+{include file=footer.html}

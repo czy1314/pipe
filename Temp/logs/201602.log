@@ -1,0 +1,12 @@
+Thu, 25 Feb 2016 21:25:59 +0800	[2]Wrong parameter count for var_dump()	\app\frontend.base.php	460
+Thu, 25 Feb 2016 21:26:15 +0800	[2]Wrong parameter count for var_dump()	\app\frontend.base.php	460
+Thu, 25 Feb 2016 21:27:05 +0800	[2]Wrong parameter count for var_dump()	\app\frontend.base.php	456
+Thu, 25 Feb 2016 21:27:56 +0800	[2]Wrong parameter count for var_dump()	\app\frontend.base.php	439
+Thu, 25 Feb 2016 21:28:13 +0800	[2]Wrong parameter count for var_dump()	\app\frontend.base.php	439
+Thu, 25 Feb 2016 21:28:57 +0800	[2]Wrong parameter count for var_dump()	\app\frontend.base.php	434
+Thu, 25 Feb 2016 21:29:13 +0800	[2]Wrong parameter count for var_dump()	\app\frontend.base.php	432
+Thu, 25 Feb 2016 21:29:25 +0800	[2]Wrong parameter count for var_dump()	\app\frontend.base.php	432
+Fri, 26 Feb 2016 01:32:28 +0800	[2]Wrong parameter count for var_dump()	\app\frontend.base.php	122
+Fri, 26 Feb 2016 01:46:10 +0800	[256]MySQL Error[1146]: Table 'wxmb.ys_cart' doesn't exist
+MySQL Query:DELETE FROM ys_cart WHERE user_id=0 AND session_id = '5e02290041de4e6dcdd804ad2b5cfaae'
+Wrong File:  D:\phpStudy\WWW\wxmb\includes\libraries\session.lib.php[345]	\lib\model\mysql.php	289

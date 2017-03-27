@@ -1,0 +1,155 @@
+{include file="header.html"}
+<link type="text/css" href="{res file=css/login.css}" rel="stylesheet" /> 
+<script type="text/javascript" src="{res file=js/supersized.3.2.7.min.js}"></script>
+<script type="text/javascript" src="{res file=js/supersized-init.js}"></script>
+<script type="text/javascript">
+$(function(){
+    $('#login_form').validate({
+        errorPlacement: function(error, element){
+           var error_td = element.parent('dd');
+            error_td.find('label').hide();
+            error_td.append(error);
+        },
+        success       : function(label){
+            label.addClass('validate_right').text('OK!');
+        },
+        onkeyup : false,
+        rules : {
+            user_name : {
+                required : true
+            },
+            password : {
+                required : true
+            },
+            captcha : {
+                required : true,
+                remote   : {
+                    url : 'index.php?app=captcha&act=check_captcha',
+                    type: 'get',
+                    data:{
+                        captcha : function(){
+                            return $('#captcha1').val();
+                        }
+                    }
+                }
+            }
+        },
+        messages : {
+            user_name : {
+                required : '{$lang.user_name_required}'
+            },
+            password  : {
+                required : '{$lang.password_required}'
+            },
+            captcha : {
+                required : '{$lang.captcha_required}',
+                remote   : '{$lang.captcha_error}'
+            }
+        }
+    });
+	
+});
+</script>
+<style>
+.w{width:95%;}
+/*
+
+	Supersized - Fullscreen Slideshow jQuery Plugin
+	Version : 3.2.7
+	Site	: www.buildinternet.com/project/supersized
+	
+	Author	: Sam Dunn
+	Company : One Mighty Roar (www.onemightyroar.com)
+	License : MIT License / GPL License
+	
+*/
+
+* { margin:0; padding:0; }
+body { background:#111; height:100%; }
+	img { border:none; }
+	
+	#supersized {  display:block; position:fixed; left:0; top:0; overflow:hidden; z-index:-999; height:100%; width:100%; }
+		#supersized img { width:auto; height:auto; position:relative; display:none; outline:none; border:none; }
+			#supersized.speed img { -ms-interpolation-mode:nearest-neighbor; image-rendering: -moz-crisp-edges; }	/*Speed*/
+			#supersized.quality img { -ms-interpolation-mode:bicubic; image-rendering: optimizeQuality; }			/*Quality*/
+		
+		#supersized li { display:block; list-style:none; z-index:-30; position:fixed; overflow:hidden; top:0; left:0; width:100%; height:100%; background:#111; }
+		#supersized a { width:100%; height:100%; display:block; }
+			#supersized li.prevslide { z-index:-20; }
+			#supersized li.activeslide { z-index:-10; }
+				#supersized li.image-loading img{ visibility:hidden; }
+			#supersized li.prevslide img, #supersized li.activeslide img{ display:inline; }
+
+
+#supersized img { max-width: none !important }
+
+</style>
+<div id="main" class="w-full">
+	<div id="page-login" class="w login-register mt20 mb20">
+    	
+        <div class="w clearfix">
+		<div class="col-sub center">
+      		<div class="form">
+        	<div class="title">{$lang.user_login}</div>
+            <div class="content">
+        		<form method="post" id="login_form">
+                	<dl class="clearfix">
+                    	<dt>{$lang.user_name}</dt>
+                        <dd>
+                        	<input class="login" type="text" name="user_name"  />
+                            <div class="clr"></div><label></label>
+                        </dd>
+						<div style="content:'\20'; display:block; overflow:hidden; height:0; clear:both;">&nbsp;</div>
+                    </dl>
+               		<dl class="clearfix">
+                    	<dt>{$lang.password}</dt>
+                        <dd>
+                        	<input class="login" type="password" name="password"/>
+                            <div class="clr"></div><label></label>
+                        </dd>
+						<div style="content:'\20'; display:block; overflow:hidden; height:0; clear:both;">&nbsp;</div>
+                    </dl>
+               
+               		<!--{if $captcha}-->
+              		<dl class="clearfix">
+                  		<dt>{$lang.captcha}</dt>
+                  		<dd class="captcha clearfix">
+                     		<input type="text" class="float-left" name="captcha" id="captcha1" />
+                     		<img height="26" id="captcha" src="index.php?app=captcha&amp;{$random_number}" class="float-left" />
+                            <a href="javascript:change_captcha($('#captcha'));" class="float-left">{$lang.next_captcha}</a>
+                     		<div class="clr"></div><label></label>
+                  		</dd>
+						<div style="content:'\20'; display:block; overflow:hidden; height:0; clear:both;">&nbsp;</div>
+               		</dl>
+               		<!--{/if}-->
+               		<dl class="clearfix">
+                  		<dt><a href="{url app=find_password}" class="find-password">{$lang.forget_password}</a></dt>
+                  		<dd class="clearfix">
+                     		<input type="submit" id="submit" name="Submit" value="{$lang.login}" title="{$lang.login}" />
+                     		
+                     		<input type="hidden" name="ret_url" value="{$ret_url}" />
+                  		</dd>
+						<div style="content:'\20'; display:block; overflow:hidden; height:0; clear:both;">&nbsp;</div>
+               		</dl>
+                	<dl class="clearfix">
+                  		<dt>&nbsp;</dt>
+                  		<dd class="register-now">
+                        	{$lang.not_member}<a href="{url app=member&act=register&ret_url=$ret_url}" title="{$lang.register}">{$lang.register}</a>
+                        </dd>
+						<div style="content:'\20'; display:block; overflow:hidden; height:0; clear:both;">&nbsp;</div>
+               		</dl>
+            
+            		<div class="partner-login" style="display:none">
+						<h3>{$lang.use_partner_account_login}</h3>
+						<p><a class="qq-login" href="#"></a><a class="weibo-login" href="#"></a></p>
+					</div>
+					<div style="content:'\20'; display:block; overflow:hidden; height:0; clear:both;">&nbsp;</div>
+         		{$hidden_value}</form>
+				<div style="content:'\20'; display:block; overflow:hidden; height:0; clear:both;">&nbsp;</div>
+         	</div>
+      	</div>
+		</div>
+        </div>
+	</div>
+</div>
+{include file="footer.html"}

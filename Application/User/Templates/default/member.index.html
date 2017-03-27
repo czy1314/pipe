@@ -1,0 +1,30 @@
+{include file=member.header.html}
+<div class="content">
+
+<link type="text/css" href="{res file=css/font-awesome.css}" rel="stylesheet" />
+    {include file=member.menu.html}
+    <div class="no-bg" id="right">
+    	{include file=member.curlocal.html}
+        
+        <div class="profile clearfix">
+		
+        	
+             <div class="info clearfix">
+				
+				<dl class="col-1 fleft">
+					<dt>
+						<span>{$lang.welcome}</span><strong>{$user.user_name|escape}</strong>
+						
+					</dt>
+					
+					<dd>
+						<span>{$lang.last_login}{$lang.colon}{$user.last_login|date:complete}</span>
+						<span>{$lang.last_ip}{$lang.colon}{$user.last_ip}</span>
+					</dd>
+					<dd>{sprintf lang=you_have_pm var1=new_message}</dd>
+				</dl>
+				  
+			</div>
+        </div>
+    </div>  
+       

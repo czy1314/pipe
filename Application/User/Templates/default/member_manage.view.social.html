@@ -1,0 +1,275 @@
+{include file="member.header.html"}
+<link type="text/css" href="{res file=css/order_form.css}" rel="stylesheet" />
+<div class="content">
+        
+     {include file=member.menu.html}
+    <div id="right">
+    	{include file=member.curlocal.html}
+    	{include file=member.submenu.html}
+         
+<form action="" method="post">
+    <div class="particular">
+        <div class="particular_wrap">
+        <style type="text/css">
+        .log_list { color:#666666; list-style:none; padding:5px 10px;  }
+         .log_list li { margin:8px 0px; }
+        .log_list li .operator { font-weight:bold; color:#FE5400; margin-right:5px; }
+        .log_list li .log_time { font-style:italic; margin:0px 5px; font-weight:bold; }
+        .log_list li .order_status { font-style:italic; margin:0px 5px; font-weight:bold; }
+        .log_list li .reason { font-style:italic; margin:0px 5px; font-weight:bold; }
+		.more a{margin-left:10px;color:#FE4E02;}
+        </style>
+            <dl class="info">
+                <dt>用户信息 
+				<!-- <span class="more"><a href="{url app=manage_member&act=view&user_id=}{$user.buyer_id}">查看更多&gt;&gt;</a></span>
+				 -->
+				</dt>               
+             </dl>
+			 <table class="user_info">
+			<tbody>
+			<tr>
+				<td>
+					<em>用户名</em>
+					<span>{$user.user_name|escape}</span>
+				</td>
+				<td>
+					<em>姓名</em>
+					<span>{$user.realname|escape|default:-}</span>
+				</td>
+				
+			</tr>
+			
+			<tr>
+				<td>
+					<em>性别</em>
+					<span>
+					<!--{if $user.gender == 0}-->未知<!--{/if}-->
+					<!--{if $user.gender == 1}-->女<!--{/if}-->
+					<!--{if $user.gender == 2}-->男<!--{/if}-->
+					</span>
+				</td>
+				<td>
+					<em>身份证号码</em>
+					<span>{$user.car_id|escape|default:-}</span>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<em>{$lang.region}</em>
+					<span>{$user.region_name|escape|default:-}</span>
+				</td>
+				<td>
+					<em>现居地</em>
+					<span>{$user.now_place_detail|escape|default:-}</span>
+				</td>
+				
+			</tr>
+			
+			<tr>
+				<td>
+					<em>{$lang.email}</em>
+					<span>{$user.email|default:-}</span>
+				</td>
+				<td>
+					<em>{$lang.phone_mob}</em>
+					<span>{$user.phone_mob|default:-}</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<em>信用卡卡号</em>
+					<span>{$user.credit_card_num|default:-}</span>
+				</td>
+				<td>
+					<em>出生日期</em>
+					<span>{$user.birth_date|default:-}</span>
+				</td>
+				
+				
+			</tr>
+			<tr>
+				<td>
+					<em>就职公司</em>
+					<span>{$user.company_name|default:-}</span>
+				</td>
+				<td>
+					<em>公司地址</em>
+					<span>{$user.work_place|default:-}</span>
+				</td>
+				
+				
+			</tr>
+			<tr>
+				<td>
+					<em>薪水</em>
+					<span>{$user.salary|default:-}</span>
+				</td>
+				<td>
+					<em>支付宝账号</em>
+					<span>{$user.alipay_id|default:-}</span>
+				</td>
+				
+				
+			</tr>
+		
+			
+			 <tr>
+				<td>
+					<em class="title">身份证正反面照片</em>
+					<img src="{$user.card_img}" width="300" height="300" />
+				</td>
+				<td>
+					<em class="title">手持身份证照片 </em>
+					<img src="{$user.userphoto}" width="300" height="300" />
+				</td>
+			</tr> 
+			
+			</tbody>
+		</table>
+		
+		
+			
+			 <dl class="info">
+                <dt>
+				担保人信息			
+				</dt>               
+             </dl>
+		    <table class="user_info">	 
+			<tbody>
+			 <tr>
+				<td>
+					<em>姓名</em>
+					<span>{$user.guarantee_name|escape|default:-}</span>
+				</td>
+				<td>
+					<em>手机号码</em>
+					<span>{$user.guarantee_phone|escape|default:-}</span>
+				</td>
+			</tr> 
+			 <tr>
+				<td>
+					<em>身份证</em>
+					<span>{$user.guarantee_card_num|escape|default:-}</span>
+				</td>
+				<td>
+					<em></em>
+					<span></span>
+				</td>
+			</tr> 
+			 <tr>
+				<td>
+					<em class="title">身份证</em>
+					<img src="{$user.guarantee_card}" width="300" height="300" />
+				</td>
+				<!--{if $user.guarantee_role == 1}-->
+					<td>
+					<em class="title">学生证</em>
+					<img src="{$user.guarantee_school_card}" width="300" height="300" />
+					</td>
+				
+				<!--{/if}-->
+				
+				
+			</tr> 
+			
+			</tbody>
+		</table>
+  
+  
+       
+       <!--{if $order_logs}-->
+       <h3>操作记录</h3>
+        <ul class="log_list">
+            <!--{foreach from=$order_logs item=log}-->
+            <li>
+                <span class="operator"><!--{if $log.operator eq '0'}--><span style="color:green;">[{$lang.system}]</span><!--{else}-->{$log.operator|escape}<!--{/if}--></span>
+                            {$lang.at}
+                <span class="log_time">{$log.log_time|date:complete}</span>
+                          
+                <span class="order_status">{$log.oringin_status}</span>
+                            变为
+                <span class="order_status">{$log.changed_status}</span>
+                <!--{if $log.remark}-->
+                备注:<span class="reason">{$log.remark|escape}</span>
+                <!--{/if}-->
+            </li>
+            <!--{/foreach}-->
+        </ul>
+       <!--{/if}-->
+      
+	   
+	   <div class="shenh_item">
+		   <ul>
+				<li>通过&nbsp;&nbsp;<input id="passed" name="is_pass" value="1"   checked type="radio">
+				</li>
+				<li>不通过&nbsp;&nbsp;<input id="no_pass" name="is_pass" type="radio">
+				</li>
+		   </ul>
+		   <div class="clear"></div>
+	   </div>
+	   <script>
+	   $(function(){
+	       $('#no_pass').click(function(){				
+			   $('#reason_id').show();	
+			   $('#reason').html('在这里写下理由...');	
+		    });
+			 $('#passed').click(function(){
+			   $('#reason').val('');				 
+			   $('#reason_id').hide();	
+			   
+		    }); 
+			$('#reason').click(function(){				
+			   $(this).html('');				
+		    });
+			
+	    })
+	   </script>
+	   <div class="reason" id="reason_id" style="display:none;">
+         <dl> 	   
+			<dt><span class="reason_title"style="bottom:415px" >认证驳回理由:</span></dt>
+			<dd>
+				<style>#reason_id .li{width:150px;float:left;margin:auto 10px 30px 30px}</style>
+				<div class="li">
+				<input type="radio" name="cancel_reason" flag="other_reason" id="d4" value="个人基本信息有误" /> <label for="d4">个人基本信息有误</label>
+				</div>
+				
+				<div class="li">
+				<input type="radio" name="cancel_reason" flag="other_reason" id="d5" value="担保人信息有误" /> <label for="d4">担保人信息有误</label>
+				</div>
+				
+		   
+				<div class="li"><input type="radio" checked name="cancel_reason" id="d1" value="其他方面原因" /> 
+				<label for="d1">其他方面原因</label></div>
+				
+		    </dd>
+			<dd>	
+			    <span class="reason_title">写给用户的建议:</span>
+			    <textarea rows="5" name="reason"  id="reason" cols="100"> 
+				</textarea>
+			</dd>
+		 <dl>
+		</div>
+		<div class="reason" style="">
+	   <span class="bz_title">备注:</span>
+	   <textarea rows="5" name="remark"  id="bz" cols="100"> 
+		</textarea><input type="hidden" name="user_id" value="{$user.user_id}" />
+		</div>
+	   <div class="sub_btn"><input type="submit" class="my_btn btn-primary" value="提交审核" /></div>
+       </div>
+          <div class="particular_bottom"></div>
+        </div>
+{$hidden_value}
+		</form>
+		</div>
+        <div class="clear"></div>
+        <div class="adorn_right1"></div>
+        <div class="adorn_right2"></div>
+        <div class="adorn_right3"></div>
+        <div class="adorn_right4"></div>
+    </div>
+
+    <div class="clear"></div>
+</div>
+</div>
+{include file="footer.html"}
