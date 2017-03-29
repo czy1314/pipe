@@ -17,17 +17,9 @@ class Frontend extends ZmApp {
 		$this->FrontendApp ();
 	}
 	function FrontendApp() {
-		Lang::load ( lang_file ( 'common' ) );
-		Lang::load ( lang_file ( APP ) );
+		////Lang::load ( lang_file ( 'common' ) );
+		////Lang::load ( lang_file ( APP ) );
 		parent::__construct ();
-		
-		// 判断商城是否关闭
-		if (! Conf::get ( 'site_status' )) {
-			$this->show_warning ( Conf::get ( 'closed_reason' ) );
-			exit ();
-		}
-		
-		// 在运行action之前，无法访问到visitor对象
 	}
 	function _run_action() {
 		

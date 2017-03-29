@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *    Boot框架核心文件，包含最基础的类与函数
 *    @author    LiuLei
@@ -20,7 +20,7 @@ class Boot
 	/* 启动 */
 	static  function run($config = array())
 	{
-		
+
 		/* 加载初始化文件 */
 		//require(ROOT_PATH . '/Framework/Core/controller/BaseController.php');     //基础控制器类
 		require(ROOT_PATH . '/Framework/Core/model/BaseModel.php');   //模型基础类
@@ -82,7 +82,6 @@ class Boot
 		$act    = !empty($_REQUEST['act']) ? preg_replace('/(\W+)/', '', $_REQUEST['act']) : $default_act;
         define('APP_PATH',ROOT_PATH . '/Application/' .ucfirst( $mod ));
 		$app_file = APP_PATH . "/Controller/{$app}.php";
-
 		if (!is_file($app_file))
 		{
 			exit('Missing controller');
@@ -93,14 +92,12 @@ class Boot
         define('MOD', $mod);
 		define('APP', $app);
 		define('ACT', $act);
-		$app_class_name = ucfirst($app) . 'App';
-
-
+		$app_class_name = 'Application\\'.$mod.'\\Controller\\'.ucfirst($app);
 		/* 实例化控制器 */
 		$app     = new $app_class_name();
 		c($app);
 		$app->do_action($act);        //转发至对应的Action
-		 
+
 		$app->destruct();
 
 	}

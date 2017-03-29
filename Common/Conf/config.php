@@ -10,7 +10,7 @@ return array (
   'DEBUG_MODE'=>1,
   'CACHE_TIME'=>1,
   'DEFAULT_MOD'=>'user',
-  'DEFAULT_APP'=>'default',	
+  'DEFAULT_APP'=>'defaults',
   'DEFAULT_ACT'   =>  'index',
   'LANG'  => 'sc-utf-8',		
   'RUNTIEM_URL'=>'http://www.daogoge.com/recept.php?url',
