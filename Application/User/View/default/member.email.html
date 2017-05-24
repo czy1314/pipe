@@ -1,0 +1,74 @@
+{include file=member.header.html}
+<script type="text/javascript">
+$(function(){
+    $('#email_form').validate({
+        errorPlacement: function(error, element){
+            $(element).next('.field_notice').hide();
+            $(element).after(error);
+        },
+        success       : function(label){
+            label.addClass('validate_right').text('OK!');
+        },
+        rules : {
+            orig_password : {
+                required : true
+            },
+            email : {
+                required   : true,
+                email      : true
+            }
+        },
+        messages : {
+            orig_password : {
+                required : '{$lang.orig_password_empty}'
+            },
+            email : {
+                required   : '{$lang.email_required}',
+                email    : '{$lang.email_invalid}'
+            }
+			
+        }
+    });
+});
+</script>
+<style>
+.borline td { padding:10px 0px; }
+.ware_list th { text-align:left; }
+.bgwhite { background: #FFFFFF;}
+</style>
+<div class="content">
+    {include file=member.menu.html}
+    <div id="right">
+        {include file=member.curlocal.html}
+		<link type="text/css" rel="stylesheet" href="{res file=css/safety.css}"/>
+		
+			<div class="security">
+				<h1>修改邮箱</h1>
+				<div class="phonemod">
+					<form  method="post" id="email_form">
+						
+						<div class="center-input">
+							<label class="label">{$lang.orig_password}:</label>
+							<input type="password" class="input_css flex-box text" name="orig_password" />
+							
+						</div>
+						<div class="center-input">
+							<label class="label">{$lang.email}:</label>
+							<input type="text" class="input_css flex-box text" name="email"/>
+							
+						</div>
+						
+						
+						<div class="btns">
+							<label class="label">&nbsp;</label>
+							<input class="submit" value="确认" type="submit">
+						</div>
+					{$hidden_value}</form>
+					<a href="/appeal/0" class="service"><span style="color:#ff4000;">无法接验证码？通过客服修改手机号</span></a>
+				</div>
+			</div>
+
+    </div>
+    <div class="clear"></div>
+</div>
+{include file=footer.html}

@@ -1,0 +1,97 @@
+{include file=member.header.html}
+<style>
+.borline td { padding:10px 0px; }
+.ware_list th { text-align:left; }
+</style>
+<script>
+$(function(){
+	var v = $('#guarantee_form').validate({
+		errorPlacement: function(error, element){
+			//alert($(element).attr('name')+"|"+$(error).html());
+			$(element).parent().next().append(error);
+		},
+		rules : {
+			guarantee_school_card : {
+				required:true,
+				accept   : 'jpe?g|png'
+			},
+			guarantee_card : {
+				required:true,	
+				accept   : 'jpe?g|png'
+			},						
+			guarantee_name : {
+				required:true
+			},
+			guarantee_phone : {
+				required:true
+			},
+			guarantee_card_num : {
+				required:true,
+				card:true
+			}
+		},
+		messages : {
+			"gua[guarantee_school_card]"  : {
+				required:'请上传担保人身份照片!',
+				accept   : '请上传jpg或者png格式图片!'
+			},
+			"gua[guarantee_card]" : {
+				required:'请上传担保人学生证照片!',
+				accept   : '请上传jpg或者png格式图片!'
+			},
+			guarantee_name : {
+				required:'请输入担保人姓名!'
+			},
+			guarantee_phone : {
+				required:'请输入担保人手机号码!'
+			},
+			guarantee_card_num : {
+				required:'请输入担保人身份号码!'
+			}
+		}
+	}); 
+	
+	jQuery.validator.addMethod("card", function(value, element) {   
+		var length = value.length;
+		if(length != 15 && length != 18)
+		{
+			var ret = false;
+		}else{
+			var ret = true;
+		}
+		return this.optional(element) || ret;
+	}, "请输入合理的身份证号码");
+	
+	$('input[ectype="change_avatar"]').change(function(){
+		var name = $(this).attr('name');
+        var src = getFullPath($(this)[0]);
+        $('img[ectype="'+name+'"]').attr('src', src);
+        $(this).find('input[ectype="change_avatar"]').removeAttr('name');
+        $(this).attr('name',name);
+    });
+});
+
+</script>
+<div class="content">
+    {include file=member.menu.html}
+    <div id="right">
+    		{include file=member.curlocal.html}
+			<link type="text/css" rel="stylesheet" href="{res file=css/order_form.css}" >
+			<form method="post" enctype="multipart/form-data" action="{$site_url}/index.php?app=memberrec&act=gart"  id="guarantee_form">
+				
+				{include file=member.scurity.html}				
+				<div style="width:180px;margin:0px auto 100px auto;">
+					<input id="post_danb" style="width:180px;height:45px;font-size:15px;" type="submit" class="btn btn-primary btn-lg" value="提交" />
+				</div>           
+	 
+			{$hidden_value}</form>
+            <div class="clear"></div>
+            <div class="adorn_right1"></div>
+            <div class="adorn_right2"></div>
+            <div class="adorn_right3"></div>
+            <div class="adorn_right4"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+{include file=footer.html}
