@@ -5,7 +5,6 @@
  */
 require_once ROOT_PATH . '/Framework/Util/Conf.php';
 require_once ROOT_PATH . '/Framework/Controller/ZmApp.php';
-exit;
 class Boot
 {
 
@@ -21,8 +20,9 @@ class Boot
             }
         }
 
+
 		/* 加载初始化文件 */
-		//require(ROOT_PATH . '/Framework/Core/controller/BaseController.php');     //基础控制器类
+        define_all(ROOT_PATH . '/Framework/Common/Conf/BaseController.php');     //基础控制器类
 		require(ROOT_PATH . '/Framework/Model/BaseModel.php');   //模型基础类
 		/* 数据过滤 */
 		if (!get_magic_quotes_gpc())
@@ -32,31 +32,15 @@ class Boot
 			$_COOKIE= addslashes_deep($_COOKIE);
 		}
 
-		if(isset($_GET['id']) && !empty($_GET['id']))
-		{
-			$_GET['id']=str_replace(' ','',$_GET['id']);
-		}
-		if(isset($_POST['id']) && !empty($_POST['id']))
-		{
-			$_POST['id']=str_replace(' ','',$_POST['id']);
-		}
 
-		if(isset($_GET['sort']) && !empty($_GET['sort']))
-		{
-			$_GET['sort']=str_replace(' ','',$_GET['sort']);
-		}
-		if(isset($_POST['sort']) && !empty($_POST['sort']))
-		{
-			$_POST['sort']=str_replace(' ','',$_POST['sort']);
-		}
+
+
 
 		$is_ajax = isset($_GET['ajax'])? 1: 0;
 		if($is_ajax)
 		{
 			define('IS_AJAX',1);
 		}
-
-
 
 		/* 请求转发 */
 		$default_app = DEFAULT_APP ? DEFAULT_APP : 'welcome';

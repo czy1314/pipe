@@ -3,15 +3,7 @@
  * Boot框架全局函数文件
  */
 require_once CORE_PATH.'Util\Conf.php';
-spl_autoload_register('autoload');
-/**
- * 类库自动加载
- * @param string $class 对象类名
- * @return void
- */
-function autoload($class) {
-     var_dump($class);
-}
+
 
 /**
  * 获取视图链接
@@ -160,7 +152,34 @@ function &db() {
 }
 
 
+function addslashes_deep($value)
+{
+    if (empty($value))
+    {
+        return $value;
+    }
+    else
+    {
+        return is_array($value) ? array_map('addslashes_deep', $value) : addslashes($value);
+    }
+}
 
+function define_all($source) {
+    if (is_string ( $source )) {
+        /* 导入数组 */
+        $source = include ($source);
+    }
+    if (! is_array ( $source )) {
+        /* 不是数组，无法定义 */
+        return false;
+    }
+    foreach ( $source as $key => $value ) {
+        if (is_string ( $value ) || is_numeric ( $value ) || is_bool ( $value ) || is_null ( $value )) {
+            /* 如果是可被定义的，则定义 */
+            define ( strtoupper ( $key ), $value );
+        }
+    }
+}
 
 
 /**
