@@ -2,7 +2,22 @@
 /**
  * Boot框架全局函数文件
  */
-require_once CORE_PATH.'Util\Conf.php';
+
+set_include_path(ROOT_PATH.'/');
+spl_autoload_extensions('.php');
+/**
+ * 类库自动加载
+ * @param string $class 对象类名
+ * @return void
+ */
+function __autoload($class){
+    $class = get_include_path(). $class;
+    $class = str_replace('\\', '/', $class) . '.php';
+    require_once($class);
+}
+spl_autoload_register('__autoload');
+require_once(CORE_PATH.'Coomom/Conf/constants.php');
+require_once CORE_PATH.'Util/Conf.php';
 
 
 /**
