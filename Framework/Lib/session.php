@@ -1,6 +1,6 @@
 <?php
 namespace   Framework\lib;
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     die('Hacking attempt');
 }
@@ -29,7 +29,7 @@ class SessionProcessor
     /**
      * 构造函数
      *
-     * 
+     *
      * @param object $db 数据库对象
      * @param stirng $session_table 数据表名
      * @param string $session_data_table 数据存储表名
@@ -38,7 +38,7 @@ class SessionProcessor
      * @return void
      */
     function __construct(&$db, $session_table, $session_data_table, $session_name = 'PIPE_ID', $session_id = '')
-    { 
+    {
         $this->SessionProcessor($db, $session_table, $session_data_table, $session_name, $session_id);
     }
 
@@ -62,6 +62,7 @@ class SessionProcessor
                                     array (& $this, "_sess_destroy"),
                                     array (& $this, "_sess_gc")
                                 );
+        import('time');
         $this->gmtime = gmtime();
         $this->max_life_time = 14400;
         $this->session_cookie_path = COOKIE_PATH;
@@ -99,7 +100,7 @@ class SessionProcessor
         }
         else
         {
-			
+
             $this->session_id = $session_id;
         }
 
@@ -110,20 +111,20 @@ class SessionProcessor
             if ($this->gen_session_key($tmp_session_id) == substr($this->session_id, 32))
             {
                 $this->session_id = $tmp_session_id;
-							
+
             }
             else{
-            
-		
+
+
 				if(empty($_GET['ssid'])){
 					 $this->session_id = '';
 				}else{
 					$this->session_id = $tmp_session_id;
 				}
-               
+
             }
         }
-        
+
         if (!$this->session_id)
         {
             $this->gen_session_id();
@@ -137,7 +138,7 @@ class SessionProcessor
     /**
      * open session handler
      *
-     * 
+     *
      * @param string $save_path
      * @param string $session_name
      * @return boolen
@@ -150,7 +151,7 @@ class SessionProcessor
     /**
      * close session handler
      *
-     * 
+     *
      * @return boolen
      */
     function _sess_close()
@@ -161,7 +162,7 @@ class SessionProcessor
     /**
      * read session handler
      *
-     * 
+     *
      * @param string $sesskey
      * @return string
      */
@@ -211,7 +212,7 @@ class SessionProcessor
     /**
      * destory session handler
      *
-     * 
+     *
      * @param stirng $sesskey
      * @return void
      */
@@ -250,7 +251,7 @@ class SessionProcessor
     /**
      * 生成session id
      *
-     * 
+     *
      * @return string
      */
     function gen_session_id()
@@ -263,14 +264,14 @@ class SessionProcessor
     /**
      * 生成session验证串
      *
-     * 
+     *
      * @param string $session_id
      * @return stirng
      */
     function gen_session_key($session_id)
     {
         static $ip = '';
-		
+
 		/**
 
         if ($ip == '')
@@ -285,7 +286,7 @@ class SessionProcessor
     /**
      * 插入一个新session
      *
-     * 
+     *
      * @return void
      */
     function insert_session()
@@ -317,7 +318,7 @@ class SessionProcessor
     /**
      * 清除一个session
      *
-     * 
+     *
      * @return boolen
      */
     function destroy_session()
@@ -341,7 +342,7 @@ class SessionProcessor
     /**
      * 获取当前session id
      *
-     * 
+     *
      * @return string
      */
     function get_session_id()
@@ -352,7 +353,7 @@ class SessionProcessor
     /**
      * 获取用户数量
      *
-     * 
+     *
      * @return int
      */
     function get_users_count()
@@ -365,7 +366,7 @@ class SessionProcessor
     /**
      * 添加关联表
      *
-     * 
+     *
      * @param string $table_name
      * @param string $alias
      * @param string $related_key
@@ -382,7 +383,7 @@ class SessionProcessor
     /**
      * 获取过期时间
      *
-     * 
+     *
      * @return void
      */
     function get_expiry()
@@ -393,7 +394,7 @@ class SessionProcessor
     /**
      * 打开session
      *
-     * 
+     *
      * @return void
      */
     function my_session_start()
@@ -408,18 +409,18 @@ class MemcacheSession
 {
     var $_memcache = null; // memcache服务器
     var $max_life_time = 1440; // session 过期时间
-    var $session_cookie_path = '/'; 
+    var $session_cookie_path = '/';
     var $session_cookie_domain = '';
     var $session_cookie_secure = false;
     var $session_name = '';
     var $gmtime = 0;
     var $_ip = '';
-    
+
     function __construct($memcache_servers, $session_name = 'PIPE_ID')
     {
         $this->MemcacheSession($memcache_servers, $session_name);
     }
-    
+
     function MemcacheSession($memcache_server, $session_name = 'PIPE_ID')
     {
         // Create memcache object
@@ -491,11 +492,11 @@ class MemcacheSession
                 $this->session_cookie_path, $this->session_cookie_domain, $this->session_cookie_secure);*/
         }
     }
-    
+
     /**
      * open session handler
      *
-     * 
+     *
      * @param string $save_path
      * @param string $session_name
      * @return boolen
@@ -504,11 +505,11 @@ class MemcacheSession
     {
         return true;
     }
-    
+
     /**
      * read session handler
      *
-     * 
+     *
      * @param string $sesskey
      * @return string
      */
@@ -525,7 +526,7 @@ class MemcacheSession
             return $data;
         }
     }
-    
+
     /**
      * write session handler
      *
@@ -538,22 +539,22 @@ class MemcacheSession
     {
         return $this->_memcache->set($this->session_id, $sessvalue, 0, $this->max_life_time);
     }
-    
+
     /**
      * close session handler
      *
-     * 
+     *
      * @return boolen
      */
     function _sess_close()
     {
         return true;
     }
-    
+
     /**
      * destory session handler
      *
-     * 
+     *
      * @param stirng $sesskey
      * @return void
      */
@@ -561,7 +562,7 @@ class MemcacheSession
     {
         $this->destroy_session();
     }
-    
+
     /**
      * gc session handler 清除过期session
      *
@@ -574,11 +575,11 @@ class MemcacheSession
         // 过期Session数据Memcache会自动清理，相关数据TODO
         return true;
     }
-    
+
     /**
      * 生成session id
      *
-     * 
+     *
      * @return string
      */
     function gen_session_id()
@@ -587,11 +588,11 @@ class MemcacheSession
 
         return $this->insert_session();
     }
-    
+
     /**
      * 生成session验证串
      *
-     * 
+     *
      * @param string $session_id
      * @return stirng
      */
@@ -606,11 +607,11 @@ class MemcacheSession
  */
         return sprintf('%08x', crc32(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] . ROOT_PATH . $ip . $session_id : ROOT_PATH . $ip . $session_id));
     }
-    
+
     /**
      * 插入一个新session
      *
-     * 
+     *
      * @return void
      */
     function insert_session()
@@ -621,11 +622,11 @@ class MemcacheSession
             exit('Data Cannot be written on memcached');
         }
     }
-    
+
     /**
      * 清除一个session
      *
-     * 
+     *
      * @return boolen
      */
     function destroy_session()
@@ -636,7 +637,7 @@ class MemcacheSession
 
         return $this->delete_session($this->session_id);
     }
-    
+
     /**
      * 删除指定ID的Session
      *
@@ -648,22 +649,22 @@ class MemcacheSession
     {
         return $this->_memcache->delete($session_id);
     }
-    
+
     /**
      * 获取当前session id
      *
-     * 
+     *
      * @return string
      */
     function get_session_id()
     {
         return $this->session_id;
     }
-    
+
     /**
      * 获取用户数量
      *
-     * 
+     *
      * @return int
      */
     function get_users_count()
@@ -672,11 +673,11 @@ class MemcacheSession
 
         return $stats['curr_items'];
     }
-    
+
     /**
      * 打开session
      *
-     * 
+     *
      * @return void
      */
     function my_session_start()

@@ -12,7 +12,7 @@
  * $Id: google_sitemap.php 6206 2009-01-03 02:33:47Z yelin $
  */
 namespace   Framework\lib;
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     trigger_error('Hacking attempt', E_USER_ERROR);
 }

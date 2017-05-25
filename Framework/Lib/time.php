@@ -4,7 +4,7 @@ namespace   Framework\lib;
  *  时间函数库
  */
 
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     die('Hacking attempt');
 }

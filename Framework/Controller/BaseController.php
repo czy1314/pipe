@@ -25,6 +25,7 @@ class BaseController extends Object
 
         /* 初始化Session */
     	$this->_init_session();
+        $this->load('Evn');
        
     }
 

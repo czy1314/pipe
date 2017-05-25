@@ -6,23 +6,14 @@
 require_once ROOT_PATH . '/Framework/Util/Conf.php';
 require_once ROOT_PATH . '/Framework/Controller/ZmApp.php';
 require_once ROOT_PATH . '/Framework/Common/Conf/constants.php';
+//temp
 require_once ROOT_PATH . '/Common/Conf/constants.php';
 class Boot
 {
 
 	/* 启动 */
-	static  function run($config = array())
+	static  function run()
 	{
-
-        $query_string = isset ( $_SERVER ['argv'] [0] ) ? $_SERVER ['argv'] [0] : $_SERVER ['QUERY_STRING'];
-        if (! isset ( $_SERVER ['REQUEST_URI'] )) {
-            $_SERVER ['REQUEST_URI'] = PHP_SELF . '?' . $query_string;
-        } else {
-            if (strpos ( $_SERVER ['REQUEST_URI'], '?' ) === false && $query_string) {
-                $_SERVER ['REQUEST_URI'] .= '?' . $query_string;
-            }
-        }
-
 
 		/* 加载初始化文件 */
 		require(ROOT_PATH . '/Framework/Model/BaseModel.php');   //模型基础类
@@ -33,9 +24,6 @@ class Boot
 			$_POST  = addslashes_deep($_POST);
 			$_COOKIE= addslashes_deep($_COOKIE);
 		}
-
-
-
 
 
 		$is_ajax = isset($_GET['ajax'])? 1: 0;

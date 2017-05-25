@@ -2,7 +2,7 @@
 
 header('Content-Type:text/html;charset=utf-8');
 //error_reporting(E_ALL ^ E_NOTICE);
-define('IN_ECM',1);
+define('PIPE',1);
 //项目根路径
 define('ROOT_PATH', dirname(__FILE__));
 //框架文件路径

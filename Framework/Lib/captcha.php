@@ -11,7 +11,7 @@ namespace   Framework\lib;
  * ============================================================================
  * $Id: captcha.php 7840 2009-05-21 06:14:05Z lizhaosheng $
  */
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     trigger_error('Hacking attempt', E_USER_ERROR);
 }

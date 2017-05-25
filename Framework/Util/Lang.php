@@ -54,6 +54,7 @@ class Lang
      *    @param    none
      *    @return    void
      */
+    //temp
     function load($lang_file)
     {
         static $loaded = array();
@@ -83,7 +84,7 @@ class Lang
      *    @param    none
      *    @return    void
      */
-    function load_core($lang_file)
+    function core_load($lang_file)
     {
         if($lang_file){
             $lang_file = ROOT_PATH."Framework/Lang/{$lang_file}.lang.php";

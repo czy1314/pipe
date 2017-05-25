@@ -5,7 +5,7 @@ use \Framework\Util\Lang;
  *
  */
 
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     trigger_error('Hacking attempt', E_USER_ERROR);
 }
@@ -228,6 +228,7 @@ class PipeMysql
 
     function query($sql, $type = '', $times=0)
     {
+
         if ($this->_link_id === NULL)
         {
             $this->connect($this->_settings['dbhost'], $this->_settings['dbuser'], $this->_settings['dbpw'], $this->_settings['dbname'], $this->_settings['charset'], $this->_settings['pconnect']);
@@ -245,13 +246,10 @@ class PipeMysql
         {
             mysql_ping($this->_link_id);
         }
-
         $sql = $this->prefix($sql); // 处理表名前缀
-        if(!SHOW_SQL){
-       		 echo '<pre>';
-            	echo $sql;
-            	echo '</pre>'; 
-        }    	
+        echo '<pre>';
+        echo $sql;
+        echo '</pre>';exit;
         if (!($query = mysql_query($sql, $this->_link_id)))
         {   
         	

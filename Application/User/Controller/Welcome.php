@@ -1,5 +1,6 @@
 <?php 
 use \ Framework\Controller\BaseController;
+use \ Application\User\Model\MemberModel;
 class Welcome extends BaseController
 {
 	function __construct()
@@ -12,7 +13,10 @@ class Welcome extends BaseController
         
     }
     function index()
-    { 
+    {
+
+        var_dump(new MemberModel());
+
 		echo 'Welcome Pipe!';
         
     }

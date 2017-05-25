@@ -5,7 +5,7 @@ namespace   Framework\lib;
 
  */
 
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     trigger_error('Hacking attempt', E_USER_ERROR);
 }

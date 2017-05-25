@@ -1,6 +1,13 @@
 <?php
 
-
+$query_string = isset ( $_SERVER ['argv'] [0] ) ? $_SERVER ['argv'] [0] : $_SERVER ['QUERY_STRING'];
+if (! isset ( $_SERVER ['REQUEST_URI'] )) {
+    $_SERVER ['REQUEST_URI'] = PHP_SELF . '?' . $query_string;
+} else {
+    if (strpos ( $_SERVER ['REQUEST_URI'], '?' ) === false && $query_string) {
+        $_SERVER ['REQUEST_URI'] .= '?' . $query_string;
+    }
+}
 define ( 'CORE_LANG_PATH',ROOT_PATH.'Lang/'  );
 
 /**
@@ -21,7 +28,7 @@ function __autoload($class){
 }
 spl_autoload_register('__autoload');
 require_once CORE_PATH.'Util/Conf.php';
-
+require_once CORE_PATH.'Util/Evn.php';
 
 /**
  * 获取视图链接
@@ -118,7 +125,36 @@ function &cc() {
 }
 
 /**
- * 导入一个类
+ * 导入并实例化一个类
+ * @author LorenLei
+ * @return boolean|object
+ */
+function load($class_name) {
+    static $loader = null;
+    if (empty ( $class_name )) {
+        return false;
+    }
+    if(!empty($loader[$class_name])){
+        if(!isset($this->$class_name)){
+            $this->$class_name =  $loader[$class_name];
+        }
+        return $loader[$class_name];
+    }
+    $path = ROOT_PATH . '/Framework/Util/' . $class_name . '.php';
+    if(file_exists($path)){
+        include_once($path);
+        if(class_exists($uclass = ucfirst($class_name))){
+            $loader[$class_name] = new $uclass();
+            $this->$class_name =  $loader[$class_name];
+            return $loader[$class_name];
+        }
+    }
+    return false;
+
+}
+
+/**
+ * 导入一个lib库
  *
  * @author LorenLei
  * @return void
@@ -647,5 +683,51 @@ function array_msort($array, $cols)
 function format_datetime($time)
 {
     return date('Y-m-d h:i:s', $time);
+}
+
+function real_ip() {
+    static $realip = NULL;
+
+    if ($realip !== NULL) {
+        return $realip;
+    }
+
+    if (isset ( $_SERVER )) {
+        if (isset ( $_SERVER ['HTTP_X_FORWARDED_FOR'] )) {
+            $arr = explode ( ',', $_SERVER ['HTTP_X_FORWARDED_FOR'] );
+
+            /* 取X-Forwarded-For中第一个非unknown的有效IP字符串 */
+            foreach ( $arr as $ip ) {
+                $ip = trim ( $ip );
+
+                if ($ip != 'unknown') {
+                    $realip = $ip;
+
+                    break;
+                }
+            }
+        } elseif (isset ( $_SERVER ['HTTP_CLIENT_IP'] )) {
+            $realip = $_SERVER ['HTTP_CLIENT_IP'];
+        } else {
+            if (isset ( $_SERVER ['REMOTE_ADDR'] )) {
+                $realip = $_SERVER ['REMOTE_ADDR'];
+            } else {
+                $realip = '0.0.0.0';
+            }
+        }
+    } else {
+        if (getenv ( 'HTTP_X_FORWARDED_FOR' )) {
+            $realip = getenv ( 'HTTP_X_FORWARDED_FOR' );
+        } elseif (getenv ( 'HTTP_CLIENT_IP' )) {
+            $realip = getenv ( 'HTTP_CLIENT_IP' );
+        } else {
+            $realip = getenv ( 'REMOTE_ADDR' );
+        }
+    }
+
+    preg_match ( "/[\d\.]{7,15}/", $realip, $onlineip );
+    $realip = ! empty ( $onlineip [0] ) ? $onlineip [0] : '0.0.0.0';
+
+    return $realip;
 }
 ?>

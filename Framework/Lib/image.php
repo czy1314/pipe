@@ -13,7 +13,7 @@ namespace   Framework\lib;
  *  define('ROOT_PATH',                     '网站根目录')
  */
 
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     die('Hacking attempt');
 }

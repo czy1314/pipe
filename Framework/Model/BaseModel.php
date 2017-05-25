@@ -1,20 +1,6 @@
 <?php
-if (!defined('IN_ECM'))
-{
-    exit('403 Forbidden');
-}
-
-/* 模型相关常量定义 */
-define('HAS_ONE', 1);                     //一对一关联
-define('BELONGS_TO', 2);                  //属于关联
-define('HAS_MANY', 3);                    //一对多关联
-define('MANY_TO_MANY', 4);     //多对多关联
-define('DROP_CONDITION_TRUNCATE', 'TRUNCATE');  //清空
+namespace Framework\Model;
 use \Framework\Base\Object;
-/*
-除本基类文件外，所有的模型类的类名的构造规则应该是模型名(首字母大写)+model组成，文件名必须是模型名+.model组成
-如有一个用户模型，模型名为user，则其文件名应为user.model.php，类名为UserModel
-*/
 class BaseModel extends Object
 {
     var $db = null;

@@ -16,8 +16,38 @@ class Object
     }
     function Object()
     {
-        #TODO
+
     }
+
+    /**
+     * 导入并实例化一个类
+     * @author LorenLei
+     * @return boolean|object
+     */
+    function load($class_name) {
+        static $loader = null;
+        if (empty ( $class_name )) {
+            return false;
+        }
+        if(!empty($loader[$class_name])){
+            if(!isset($this->$class_name)){
+                $this->$class_name =  $loader[$class_name];
+            }
+            return $loader[$class_name];
+        }
+        $path = ROOT_PATH . '/Framework/Util/' . $class_name . '.php';
+        if(file_exists($path)){
+            include_once($path);
+            if(class_exists($uclass = ucfirst($class_name),false)){
+                $loader[$class_name] = new $uclass();
+                $this->$class_name =  $loader[$class_name];
+                return $loader[$class_name];
+            }
+        }
+        return false;
+
+    }
+
     /**
      *    触发错误
      *

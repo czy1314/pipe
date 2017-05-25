@@ -12,7 +12,7 @@
  * $Id: gifmerge.php 7634 2009-04-30 03:25:46Z yelin $
  */
 namespace   Framework\lib;
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     trigger_error('Hacking attempt', E_USER_ERROR);
 }

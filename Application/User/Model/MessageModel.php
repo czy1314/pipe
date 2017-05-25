@@ -1,7 +1,7 @@
 <?php
-
+namespace  Application\User\Model;
+use \Framework\Model\BaseModel;
 define('CHECK_PM_INTEVAL', 600); // 检查新消息的时间间隔（单位：秒）
-
 /* 短消息 message */
 class MessageModel extends BaseModel
 {

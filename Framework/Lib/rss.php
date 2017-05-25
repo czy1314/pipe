@@ -1,7 +1,7 @@
 <?php
 namespace   Framework\lib;
 
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     die('Hacking attempt');
 }

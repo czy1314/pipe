@@ -11,7 +11,7 @@ namespace   Framework\lib;
  * $Id: mailer.php 10154 2009-11-12 07:48:48Z wangqunqiang $
  */
 
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     trigger_error('Hacking attempt', E_USER_ERROR);
 }

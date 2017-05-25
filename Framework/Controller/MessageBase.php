@@ -3,7 +3,7 @@ use Framework\Util\Lang;
 /**
  *  消息控制器
  */
-if (!defined('IN_ECM'))
+if (!defined('PIPE'))
 {
     trigger_error('Hacking attempt', E_USER_ERROR);
 }
