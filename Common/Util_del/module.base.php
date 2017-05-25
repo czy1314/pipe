@@ -20,7 +20,7 @@ if (defined('IN_BACKEND'))
         function AdminbaseModule()
         {
             define_module();
-            Lang::load(module_lang('common'));
+            Lang::core_load(module_lang('common'));
             $this->visitor =& env('visitor');
             parent::__construct();
         }
@@ -49,7 +49,7 @@ else
         function IndexbaseModule()
         {
             define_module();
-            Lang::load(module_lang('common'));
+            Lang::core_load(module_lang('common'));
             $this->visitor =& env('visitor');
             parent::__construct();
         }

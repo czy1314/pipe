@@ -47,7 +47,6 @@ class Lang
         return true;
     }
 
-
     /**
      *    加载指定的语言项至全局语言数据中
      *
@@ -57,6 +56,40 @@ class Lang
      */
     function load($lang_file)
     {
+        static $loaded = array();
+        $old_lang = $new_lang = array();
+        $file_md5 = md5($lang_file);
+        if (!isset($loaded[$file_md5]))
+        {
+            $new_lang = Lang::fetch($lang_file);
+            $loaded[$file_md5] = $lang_file;
+        }
+        else
+        {
+            return;
+        }
+        $old_lang =& $GLOBALS['__ECLANG__'];
+        if (is_array($old_lang))
+        {
+            $new_lang = array_merge($old_lang, $new_lang);
+        }
+
+        $GLOBALS['__ECLANG__'] = $new_lang;
+    }
+    /**
+     *    加载指定的语言项至全局语言数据中
+     *
+     *    @author    LorenLei
+     *    @param    none
+     *    @return    void
+     */
+    function load_core($lang_file)
+    {
+        if($lang_file){
+            $lang_file = ROOT_PATH."Framework/Lang/{$lang_file}.lang.php";
+        }else{
+            $lang_file = ROOT_PATH."Framework/Lang/ccommon.lang.php";
+        }
         static $loaded = array();
         $old_lang = $new_lang = array();
         $file_md5 = md5($lang_file);

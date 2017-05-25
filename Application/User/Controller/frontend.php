@@ -14,8 +14,8 @@ class Frontend extends ZmApp {
 		$this->FrontendApp ();
 	}
 	function FrontendApp() {
-		////Lang::load ( lang_file ( 'common' ) );
-		////Lang::load ( lang_file ( APP ) );
+		////Lang::core_load ( lang_file ( 'common' ) );
+		////Lang::core_load ( lang_file ( APP ) );
 		parent::__construct ();
 	}
 	function _run_action() {

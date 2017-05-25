@@ -15,4 +15,4 @@ include(ROOT_PATH . '/Framework/Common/Function/necessary.php');
 //引导文件路径
 include(ROOT_PATH . '/Framework/Base/Boot.php');
 Boot::run();
-?>
+

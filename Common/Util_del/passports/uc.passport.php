@@ -406,10 +406,10 @@ class UcPassportPM extends BasePassportPM
     function UcPassportPM()
     {
         $this->show_announce = true;
-        Lang::load(APP_PATH . 'Common/Util/passports/' . MEMBER_TYPE . '/' . LANG . '/common.lang.php');
+        Lang::core_load(APP_PATH . 'Common/Util/passports/' . MEMBER_TYPE . '/' . LANG . '/common.lang.php');
         if (file_exists(ROOT_PATH . '/data/msg.lang.php'))
         {
-            Lang::load(ROOT_PATH . '/data/msg.lang.php');
+            Lang::core_load(ROOT_PATH . '/data/msg.lang.php');
         }
     }
     /**

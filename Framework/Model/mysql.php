@@ -453,7 +453,7 @@ class PipeMysql
             {
                 $last_errno = $error_no;
             }
-            Lang::load(lang_file('common'));
+            Lang::core_load('common');
            
 			 echo "<b>MySQL server error report:</b><br />";
             echo "Error:",$error, "<br />";

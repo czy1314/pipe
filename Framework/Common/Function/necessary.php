@@ -1,4 +1,8 @@
 <?php
+
+
+define ( 'CORE_LANG_PATH',ROOT_PATH.'Lang/'  );
+
 /**
  * Boot框架全局函数文件
  */
@@ -16,7 +20,6 @@ function __autoload($class){
     require_once($class);
 }
 spl_autoload_register('__autoload');
-require_once(CORE_PATH.'Coomom/Conf/constants.php');
 require_once CORE_PATH.'Util/Conf.php';
 
 
@@ -195,6 +198,7 @@ function define_all($source) {
         }
     }
 }
+
 
 
 /**
@@ -640,13 +644,8 @@ function array_msort($array, $cols)
     return $ret;
 }
 
-
-
-
-
 function format_datetime($time)
 {
     return date('Y-m-d h:i:s', $time);
 }
-
 ?>

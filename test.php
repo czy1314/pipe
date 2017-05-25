@@ -1,7 +1,2 @@
-<?php 
-	
-$arr = array();
-$b = $arr['a'];
-echo $b;
-var_dump(empty($b));
-var_dump(isset($b));
+<?php
+file_put_contents('./text.txt', 'afafdafadsff'."\r\n".'bbbbbbbbbbbbbb');
