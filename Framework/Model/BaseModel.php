@@ -1,4 +1,7 @@
 <?php
+/**
+ * 直接面向用户的基础模型类
+ */
 namespace Framework\Model;
 use \Framework\Base\Object;
 class BaseModel extends Object
@@ -32,8 +35,13 @@ class BaseModel extends Object
     /* 关系(定义关系时，只有belongs_to以及MANY_TO_MANY需要指定reverse反向关系) */
     var $_relation = array();
 
-    function __construct($params, $db)
+    var $filter = '';
+
+    function __construct($params='', $db='')
     {
+        if(!$db){
+            $db = db();
+        }
         $this->BaseModel($params, $db);
     }
    
@@ -45,11 +53,11 @@ class BaseModel extends Object
      *  @param  object $db
      *  @return void
      */
-    function BaseModel($params, $db)
-    {    	
-    	//define('SHOW_SQL', 0);
-    	
-    	
+    function BaseModel($params='', $db)
+    {
+        if(!$db){
+            $db = db();
+        }
         $this->db = $db;
         !$this->alias && $this->alias = $this->table;
         $this->_prefix = DB_PREFIX;
@@ -61,6 +69,7 @@ class BaseModel extends Object
                 $this->$key = $value;
             }
         }
+        $this->filter = load('/Framework/Model/Filter');
     }
     /**
      * 根据表字段名匹配字段中文解释
@@ -291,7 +300,7 @@ class BaseModel extends Object
             return false;
         }
        
-        $data = $this->_valid($data);
+        $data = $this->filter->_valid($data);
         
         if (!$data)
         {
@@ -518,7 +527,7 @@ class BaseModel extends Object
         {
             return false;
         }
-        $edit_data = $this->_valid($edit_data);
+        $edit_data = $this->filter->_valid($edit_data);
        
         if (!$edit_data)
         {
@@ -907,149 +916,6 @@ class BaseModel extends Object
      *  @param  array $data
      *  @return mixed
      */
-    function _valid($data)
-    {
-        if (empty($this->_autov) || empty($data) || !is_array($data))
-        {
-            return $data;
-        }
-        $max = $filter = $reg = $default = $valid = '';
-        reset($data);
-        $is_multi = (key($data) === 0 && is_array($data[0]));
-        if (!$is_multi)
-        {
-            $data = array($data);
-        }
-        foreach ($this->_autov as $_k => $_v)
-        {
-            if (is_array($_v))
-            {
-                $required = (isset($_v['required']) && $_v['required']) ? true : false;
-                $type  = isset($this->_autov[$_k]['type']) ? $this->_autov[$_k]['type'] : 'string';
-                $min  = isset($this->_autov[$_k]['min']) ? $this->_autov[$_k]['min'] : 0;
-                $max  = isset($this->_autov[$_k]['max']) ? $this->_autov[$_k]['max'] : 0;
-                $filter = isset($this->_autov[$_k]['filter']) ? $this->_autov[$_k]['filter'] : '';
-                $valid= isset($this->_autov[$_k]['valid']) ? $this->_autov[$_k]['valid'] : '';
-                $reg  = isset($this->_autov[$_k]['reg']) ? $this->_autov[$_k]['reg'] : '';
-                $default = isset($this->_autov[$_k]['default']) ? $this->_autov[$_k]['default'] : '';
-            }
-            else
-            {
-                preg_match_all('/([a-z]+)(\((\d+),(\d+)\))?/', $_v, $result);
-                $type = $result[1];
-                $min  = $result[3];
-                $max  = $result[4];
-            }
-            $field_name = $this->match_field($_k);
-            foreach ($data as $_sk => $_sd)
-            {
-            	$has_set = isset($data[$_sk][$_k]);
-              
-                if (!$has_set)
-                {
-                   // continue;
-                }
-                       
-                    	
-                if ($required && $data[$_sk][$_k] == '')
-                {
-                	
-                    $this->_error(Lang::get("required_field"), $field_name);
-                         
-                    return false;
-                }
-
-                /* 运行到此，说明该字段不是必填项可以为空 */
-
-                $value = $data[$_sk][$_k];
-
-                /* 默认值 */
-                if (!$value && $default)
-                {
-                    $data[$_sk][$_k] = function_exists($default) ? $default() : $default;
-                    continue;
-                }
-
-                /* 若还是空值，则没必要往下验证长度，正则，自定义和过滤，因为其已经是一个空值了 */
-                if (!$value)
-                {
-                    continue;
-                }
-
-                /* 大小|长度限制 */
-                if ($type == 'string')
-                {
-                    $strlen = strlen($value);
-                    if ($min != 0 && $strlen < $min)
-                    {
-                        $this->_error(Lang::get('autov_length_lt_min'), $field_name);
-
-                        return false;
-                    }
-                    if ($max != 0 && $strlen > $max)
-                    {
-                        $this->_error(Lang::get('autov_length_gt_max'), $field_name);
-
-                        return false;
-                    }
-                }
-                else
-                {
-                    if ($min != 0 && $value < $min)
-                    {
-                        $this->_error(Lang::get('autov_value_lt_min'), $field_name);
-
-                        return false;
-                    }
-                    if ($max != 0 && $value > $max)
-                    {
-                        $this->_error(Lang::get('autov_value_gt_max'), $field_name);
-
-                        return false;
-                    }
-                }
-
-                /* 正则 */
-                if ($reg)
-                {
-                    if (!preg_match($reg, $value))
-                    {
-                        $this->_error(Lang::get('check_match_error'), $field_name);
-                        return false;
-                    }
-                }
-
-                /* 自定义验证 */
-                if ($valid && function_exists($valid))
-                {
-                    $result = $valid($value);
-                    if ($result !== true)
-                    {
-                        $this->_error($result);
-
-                        return false;
-                    }
-                }
-
-                /* 过滤 */
-                if ($filter)
-                {
-                    $funs    = explode(',', $filter);
-                    foreach ($funs as $fun)
-                    {
-                        function_exists($fun) && $value = $fun($value);
-                    }
-                    $data[$_sk][$_k] = $value;
-                }
-            }
-        }
-        if (!$is_multi)
-        {
-            $data = $data[0];
-        }
-       
-        return $data;
-    }
 
     /**
      *  初始化查询参数

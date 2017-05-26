@@ -1,35 +1,4 @@
 <?php
-
-$query_string = isset ( $_SERVER ['argv'] [0] ) ? $_SERVER ['argv'] [0] : $_SERVER ['QUERY_STRING'];
-if (! isset ( $_SERVER ['REQUEST_URI'] )) {
-    $_SERVER ['REQUEST_URI'] = PHP_SELF . '?' . $query_string;
-} else {
-    if (strpos ( $_SERVER ['REQUEST_URI'], '?' ) === false && $query_string) {
-        $_SERVER ['REQUEST_URI'] .= '?' . $query_string;
-    }
-}
-define ( 'CORE_LANG_PATH',ROOT_PATH.'Lang/'  );
-
-/**
- * Boot框架全局函数文件
- */
-
-set_include_path(ROOT_PATH.'/');
-spl_autoload_extensions('.php');
-/**
- * 类库自动加载
- * @param string $class 对象类名
- * @return void
- */
-function __autoload($class){
-    $class = get_include_path(). $class;
-    $class = str_replace('\\', '/', $class) . '.php';
-    require_once($class);
-}
-spl_autoload_register('__autoload');
-require_once CORE_PATH.'Util/Conf.php';
-require_once CORE_PATH.'Util/Evn.php';
-
 /**
  * 获取视图链接
  *
@@ -125,28 +94,36 @@ function &cc() {
 }
 
 /**
- * 导入并实例化一个类
+ * 实例化并且缓存一个类，默认加载框架文件下面的工具类（/Framework/Util），参数可以是相对于项目根目录的一个文件具体路径,
  * @author LorenLei
  * @return boolean|object
  */
 function load($class_name) {
-    static $loader = null;
+    $class_name = trim($class_name);
     if (empty ( $class_name )) {
         return false;
     }
-    if(!empty($loader[$class_name])){
-        if(!isset($this->$class_name)){
-            $this->$class_name =  $loader[$class_name];
-        }
-        return $loader[$class_name];
+    static $loader = null;
+    //有路径
+    if(($pos = strrpos($class_name,'\/')) !==  false || ($pos = strrpos($class_name,'\\')) !== false){
+        //修正路径
+        $class_name = (strpos($class_name,'\/') !==  0 && strpos($class_name,'\\') !==  0) ? DIRECTORY_SEPARATOR.$class_name:$class_name;
+        $path =  ROOT_PATH . $class_name . 'php';
+        $class_name = substr($path,$pos);
+    }else{
+        $class_name = ucfirst($class_name);
+        $path = ROOT_PATH . '/Framework/Util/' . $class_name . '.php';
     }
-    $path = ROOT_PATH . '/Framework/Util/' . $class_name . '.php';
+    $md5_path = md5($path);
+    if(!empty($loader[$md5_path])){
+        return $loader[$md5_path];
+    }
+
     if(file_exists($path)){
         include_once($path);
-        if(class_exists($uclass = ucfirst($class_name))){
-            $loader[$class_name] = new $uclass();
-            $this->$class_name =  $loader[$class_name];
-            return $loader[$class_name];
+        if(class_exists($class_name,false)){
+            $loader[$md5_path] = new $class_name();
+            return $loader[$md5_path];
         }
     }
     return false;
@@ -166,6 +143,7 @@ function import() {
     }
     array_walk ( $c, create_function ( '$item, $key', 'include_once(ROOT_PATH . \'/Framework/Lib/\' . $item . \'.php\');' ) );
 }
+
 
 /**
  * 创建MySQL数据库对象实例
@@ -730,4 +708,30 @@ function real_ip() {
 
     return $realip;
 }
+/**
+ *    将default.abc类的字符串转为$default['abc']
+ *
+ *    @author    Garbin
+ *    @param     string $str
+ *    @return    string
+ */
+function strtokey($str, $owner = '')
+{
+    if (!$str)
+    {
+        return '';
+    }
+    if ($owner)
+    {
+        return $owner . '[\'' . str_replace('.', '\'][\'', $str) . '\']';
+    }
+    else
+    {
+        $parts = explode('.', $str);
+        $owner = '$' . $parts[0];
+        unset($parts[0]);
+        return strtokey(implode('.', $parts), $owner);
+    }
+}
+
 ?>

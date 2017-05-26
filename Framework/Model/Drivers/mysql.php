@@ -1,5 +1,4 @@
 <?php
-use \Framework\Util\Lang;
 /**
  *  MYSQL 公用类库
  *
@@ -69,6 +68,7 @@ class PipeMysql
      **/
     function connect($dbhost, $dbuser, $dbpw, $dbname = '', $charset = 'utf8', $pconnect = 0, $quiet = 0)
     {
+
         if ($pconnect)
         {
             if (!($this->_link_id = @mysql_pconnect($dbhost, $dbuser, $dbpw)))

@@ -20,11 +20,11 @@ class Object
     }
 
     /**
-     * 导入并实例化一个类
+     * 导入并实例化一个类,实例化对象作为
      * @author LorenLei
      * @return boolean|object
      */
-    function load($class_name) {
+    public function load($class_name) {
         static $loader = null;
         if (empty ( $class_name )) {
             return false;
@@ -35,7 +35,8 @@ class Object
             }
             return $loader[$class_name];
         }
-        $path = ROOT_PATH . '/Framework/Util/' . $class_name . '.php';
+        $path = ROOT_PATH . '/Framework/Util/' .  ucfirst($class_name) . '.php';
+
         if(file_exists($path)){
             include_once($path);
             if(class_exists($uclass = ucfirst($class_name),false)){
@@ -44,6 +45,7 @@ class Object
                 return $loader[$class_name];
             }
         }
+        var_dump( $this->$class_name);
         return false;
 
     }

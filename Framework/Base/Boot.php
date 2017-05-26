@@ -3,11 +3,8 @@
  *    Boot框架核心文件，包含最基础的类与函数
 *    @author  LorenLei
  */
-require_once ROOT_PATH . '/Framework/Util/Conf.php';
-require_once ROOT_PATH . '/Framework/Controller/ZmApp.php';
-require_once ROOT_PATH . '/Framework/Common/Conf/constants.php';
+//require_once ROOT_PATH . '/Framework/Controller/ZmApp.php';
 //temp
-require_once ROOT_PATH . '/Common/Conf/constants.php';
 class Boot
 {
 
@@ -15,23 +12,9 @@ class Boot
 	static  function run()
 	{
 
-		/* 加载初始化文件 */
-		require(ROOT_PATH . '/Framework/Model/BaseModel.php');   //模型基础类
-		/* 数据过滤 */
-		if (!get_magic_quotes_gpc())
-		{
-			$_GET   = addslashes_deep($_GET);
-			$_POST  = addslashes_deep($_POST);
-			$_COOKIE= addslashes_deep($_COOKIE);
-		}
-
-
-		$is_ajax = isset($_GET['ajax'])? 1: 0;
-		if($is_ajax)
-		{
-			define('IS_AJAX',1);
-		}
-
+        //模型基础类
+        require(ROOT_PATH . '/Framework/Base/Object.php');
+        require(ROOT_PATH . '/Framework/Model/BaseModel.php');
 		/* 请求转发 */
 		$default_app = 'welcome';
 		$default_act =  'index';

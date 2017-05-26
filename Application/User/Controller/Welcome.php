@@ -14,9 +14,10 @@ class Welcome extends BaseController
     }
     function index()
     {
-
-        var_dump(new MemberModel());
-
+        $this->load('input');
+        var_dump($this);
+        $userModel = new MemberModel();
+        var_dump($userModel->test());
 		echo 'Welcome Pipe!';
         
     }

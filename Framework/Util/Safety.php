@@ -5,6 +5,88 @@
  */
 class Safety extends \Framework\Base\Object{
 
+    function clean($val){
+        if(!empty($val)){
+            return $val;
+        }
+        $val = $this->html_filter($this->html_script($this->remove_xss($val)));
+        if($this->inject_check($val)){
+            //temp
+            $this->_error(Lang::get('invalid_input'));
+            return '';
+        }
+        return $val;
+    }
+    /**
+    * @param $val
+    * @return mixed
+    * @usage:dicuz采用的过滤方式
+    */
+    function remove_xss($val)
+    {
+        /**
+         *过滤以下情况
+         * "&#00009;&#000097;&#0000111;&#0000110;&#000099;&#0000108;&#0000105;&#000099;&#0000107;"???&#00009;aonclick
+         * &#x00006e;&#x000063;&#x00006c;&#x000069;&#x000063;&#x00006b;???nclick
+         */
+        $val = preg_replace('/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/', '', $val);
+        $search = 'abcdefghijklmnopqrstuvwxyz';
+        $search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $search .= '1234567890!@#$%^&*()';
+        $search .= '~`";:?+/={}[]-_|\'\\';
+        for ($i = 0; $i < strlen($search); $i++) {
+            $char = $search[$i];
+            $ordNum = ord($char);
+            $dexNum = dechex($ordNum);
+            $val = preg_replace('/(&#[xX]0{0,8}' . $dexNum . ';?)/i',$char, $val);
+            $val = preg_replace('/(&#0{0,8}' . $ordNum . ';?)/', $char, $val);
+        }
+
+        $ra1 = array('onclick','javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script',
+            'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
+        $ra2 = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy',
+            'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload',
+            'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'oncontextmenu', 'oncontrolselect',
+            'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick',
+            'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover',
+            'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange',
+            'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown',
+            'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown',
+            'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover',
+            'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste',
+            'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend',
+            'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted',
+            'onscroll', 'onselect', 'onselectionchange',
+            'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
+        $ra = array_merge($ra1, $ra2);
+        $found = true;
+        while ($found == true) {
+            $val_before = $val;
+            for ($i = 0; $i < sizeof($ra); $i++) {
+                $pattern = '/';
+                for ($j = 0; $j < strlen($ra[$i]); $j++) {
+                    if ($j > 0) {
+                        $pattern .= '(';
+                        $pattern .= '(&#[xX]0{0,8}([9ab]);)';
+                        $pattern .= '|';
+                        $pattern .= '|(&#0{0,8}([9|10|13]);)';
+                        $pattern .= ')*';
+                    }
+                    $pattern .= $ra[$i][$j];
+                }
+                $pattern .= '/i';
+
+                $replacement = substr($ra[$i], 0, 2) . '<x>' . substr($ra[$i], 2);
+                $val = preg_replace($pattern, $replacement, $val);
+                if ($val_before == $val) {
+                    $found = false;
+                }
+            }
+        }
+        return $val;
+    }
+
+
     function html_script($text) {
         $str = "'<script[^>]*?>.*?</script\s*>'si";
         $text = preg_replace ( '/onerror/', '', $text );

@@ -1,5 +1,4 @@
 <?php
-use Framework\Util\Lang;
 /**
  *  消息控制器
  */

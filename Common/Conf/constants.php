@@ -11,10 +11,10 @@ defined('CACHE_TIME') or define('CACHE_TIME', 1);
 defined('DEFAULT_MOD') or define('DEFAULT_MOD', 'user');
 defined('DEFAULT_APP') or define('DEFAULT_APP', 'welcome');
 defined('DEFAULT_ACT') or define('DEFAULT_ACT', 'index');
-defined('SITE_URL') or define('SITE_URL', 'http://localhost:83/wxmb');
+defined('SITE_URL') or define('SITE_URL', 'http://localhost:83/hichat');
 defined('SITE_NAME') or define('SITE_NAME', 'pipe');
 defined('DB') or define('DB','mysql');
-defined('DB_CONFIG') or define('DB_CONFIG', 'mysql://root:root@localhost:3306/wxmb');
+defined('DB_CONFIG') or define('DB_CONFIG', 'mysql://root:root@127.0.0.1:3307/hichat');
 defined('DB_PREFIX') or define('DB_PREFIX', '');
 defined('COOKIE_DOMAIN') or define('COOKIE_DOMAIN', '');
 defined('COOKIE_PATH') or define('COOKIE_PATH', '/');
@@ -44,10 +44,10 @@ defined('IMAGE_FILE_TYPE') or define ( 'IMAGE_FILE_TYPE', 'gif|jpg|jpeg|png' ); 
 
 
 /* 模型相关常量定义 */
-define('HAS_ONE', 1);                     //一对一关联
-define('BELONGS_TO', 2);                  //属于关联
-define('HAS_MANY', 3);                    //一对多关联
-define('MANY_TO_MANY', 4);     //多对多关联
-define('DROP_CONDITION_TRUNCATE', 'TRUNCATE');  //清空
+defined('HAS_ONE') or  define('HAS_ONE', 1);                     //一对一关联
+defined('BELONGS_TO') or define('BELONGS_TO', 2);                  //属于关联
+defined('HAS_MANY') or define('HAS_MANY', 3);                    //一对多关联
+defined('MANY_TO_MANY') or define('MANY_TO_MANY', 4);     //多对多关联
+defined('DROP_CONDITION_TRUNCATE') or define('DROP_CONDITION_TRUNCATE', 'TRUNCATE');  //清空
 
 ?>
