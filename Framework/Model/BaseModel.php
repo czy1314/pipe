@@ -4,6 +4,7 @@
  */
 namespace Framework\Model;
 use \Framework\Base\Object;
+use \Framework\Model\Filter;
 class BaseModel extends Object
 {
     var $db = null;
@@ -34,9 +35,11 @@ class BaseModel extends Object
 
     /* 关系(定义关系时，只有belongs_to以及MANY_TO_MANY需要指定reverse反向关系) */
     var $_relation = array();
-
+    //过滤器
     var $filter = '';
-
+    //字段列表（带注释）
+    var $fields = array();
+    var $data = array();
     function __construct($params='', $db='')
     {
         if(!$db){
@@ -69,18 +72,20 @@ class BaseModel extends Object
                 $this->$key = $value;
             }
         }
-        $this->filter = load('/Framework/Model/Filter');
+        $this->filter = new Filter();
     }
     /**
      * 根据表字段名匹配字段中文解释
      */
 	function match_field($field)
-	{   $result =  $this->meaning_of_field[$field];
-		if($result)
-		{
-			return $result;
-		}
-		return $field;
+	{
+        if(empty($this->fields)){
+            $this->fields = $this->db->table_fields($this->table);
+        }
+        if(!$this->fields){
+            $this->_error('获取表'.$this->table.'的字段集失败');
+        }
+        return !empty($this->fields[$field]) ? $this->fields[$field]:$field;
 		
 	}
     /**
@@ -101,7 +106,7 @@ class BaseModel extends Object
      *    @param     mixed $params
      *    @return    array
      */
-    function get($params)
+    function getOne($params)
     {
         $data = $this->find($params);
         if (!is_array($data))
@@ -163,12 +168,12 @@ class BaseModel extends Object
         {
             $this->_updateLastQueryCount("SELECT COUNT(*) as c FROM {$tables}{$conditions}");
         }
-        
+
         /* 完整的SQL */
         $sql = "SELECT {$fields} FROM {$tables}{$conditions}{$order}{$limit}";
+
         $index_key = $index_key ? $this->db->getAllWithIndex($sql, $index_key) :
                             $this->db->getAll($sql);
-               
         return $index_key;
     }
 
@@ -286,21 +291,49 @@ class BaseModel extends Object
     }
 
     /**
+     * 数据校验
+     * @param array $data：校验数据,boolen $enough：是否校验数据充足,也就是把 $this->_autov里的字段全部校验一遍
+     * @return bool
+     */
+    function check($data = array(),$enough=true){
+        $data =  $this->data = $data ? $data: $this->data;
+        if (empty($data) || ($enough &&!$this->dataEnough($data)))
+        {
+            $this->_error('数据不充足');
+            return false;
+        }
+        $autov = $this->_autov;
+        if(!$enough){
+            $autov = array();
+            foreach($data as $field => $val){
+                isset($data[$field]) && $autov[$field] = $val;
+            }
+        }
+
+        $data = $this->filter->_valid($autov,$data,$this);
+
+        if (!$data)
+        {
+            $this->_error('无效数据');
+            return false;
+        }
+    }
+    /**
      *  添加一条记录
      *
      *  @author LorenLei
      *  @param  array $data
      *  @return mixed
      */
-    function add($data, $compatible = false)
+    function save($data=array(), $replace = false)
     {
-    	      
+        $data =  $this->data = $data ? $data: $this->data;
         if (empty($data) || !$this->dataEnough($data))
         {
             return false;
         }
-       
-        $data = $this->filter->_valid($data);
+        //temp
+        $data = $this->filter->_valid($this->_autov,$data,$this);
         
         if (!$data)
         {
@@ -308,8 +341,7 @@ class BaseModel extends Object
             return false;
         }
         $insert_info = $this->_getInsertInfo($data);
-        $mode = $compatible ? 'REPLACE' : 'INSERT';
-       
+        $mode = $replace ? 'REPLACE' : 'INSERT';
         $this->db->query("{$mode} INTO {$this->table}{$insert_info['fields']} VALUES{$insert_info['values']}");
         $insert_id = $this->db->insert_id();
         if ($insert_id)
@@ -523,11 +555,12 @@ class BaseModel extends Object
      */
     function edit($conditions, $edit_data)
     {
+        $edit_data =  $this->data = $edit_data ? $edit_data: $this->data;
         if (empty($edit_data))
         {
             return false;
         }
-        $edit_data = $this->filter->_valid($edit_data);
+        $edit_data = $this->filter->_valid($this->_autov,$edit_data,$this);
        
         if (!$edit_data)
         {
@@ -1184,25 +1217,6 @@ class BaseModel extends Object
         return $fields;
     }
 
-    /**
-     * 用于统计
-     */
-    function getOne($sql)
-    {
-        return $this->db->getOne($sql);
-    }
-    function getRow($sql)
-    {
-        return $this->db->getRow($sql);
-    }
-    function getCol($sql)
-    {
-        return $this->db->getCol($sql);
-    }
-    function getAll($sql)
-    {
-        return $this->db->getAll($sql);
-    }
     function start() {
     	$this->db->start_transaction();
     }

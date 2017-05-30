@@ -38,8 +38,6 @@ class Boot
         //转发至对应的Action
 		$app->do_action($act);
 
-		$app->destruct();
-
 	}
 }
 

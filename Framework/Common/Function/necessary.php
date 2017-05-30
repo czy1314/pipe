@@ -734,4 +734,41 @@ function strtokey($str, $owner = '')
     }
 }
 
+function collect_error($msg=''){
+    static $errors = array();
+    if($msg){
+        $errors = array_merge($errors,array($msg));
+    }else{
+        if(!IS_AJAX){
+            showDebug(implode('<br>',$errors));
+        }else{
+            return   implode('|',$errors);
+        }
+    }
+
+
+}
+function showDebug($msg){
+        echo  '<div  onclick="show_dbg(event)" style="position: fixed;z-index:9999999;border:1px solid palevioletred;top:0;right: 0;width: 100%;height: 100px;overflow-y: auto;background: lightgray;" id="debug_win">'.$msg.'</div>
+<script>
+	function show_dbg(e) {
+	    e = e || window.event;
+	    var el = e.target;
+		if(el.className==\'block\' || !el.className){
+			el.style.width =el.style.height = \'20px\';
+			el.className = \'none\'
+		} else{
+			el.style.width =\'100%\';
+			el.style.height = \'100px\'
+			el.className=\'block\';
+		}
+	}
+</script>
+';
+function createRandCode($num){
+
+
+}
+
+}
 ?>

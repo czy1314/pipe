@@ -1,4 +1,25 @@
 <?php
+//temp
+
+ function _exception_handler($exception)
+{
+    exit('Exception: '.$exception->getMessage().$exception->getFile().$exception->getLine()); // EXIT_ERROR
+}
+//temp
+function _error_handler($exception)
+{
+
+}
+//temp
+function _shutdown_handler($exception)
+{
+
+}
+
+set_error_handler('_error_handler');
+set_exception_handler('_exception_handler');
+register_shutdown_function('_shutdown_handler');
+
 if(file_exists(ROOT_PATH . '/Framework/Common/Conf/constants.php')){
     require_once ROOT_PATH . '/Framework/Common/Conf/constants.php';
 }
@@ -17,7 +38,6 @@ if (! isset ( $_SERVER ['REQUEST_URI'] )) {
 }
 
 define('IS_AJAX',! empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
-
 define ( 'CORE_LANG_PATH',ROOT_PATH.'Lang/'  );
 define ( 'IS_CLI',PHP_SAPI === 'cli' OR defined('STDIN'));
 

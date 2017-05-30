@@ -2,7 +2,7 @@
 namespace Framework\Model;
 use \Framework\Base\Object;
 class  Filter extends Object{
-     function _valid($_autov,$data)
+     function _valid($_autov,$data,$model)
     {
         if (empty($_autov) || empty($data) || !is_array($data))
         {
@@ -35,7 +35,8 @@ class  Filter extends Object{
                 $min  = $result[3];
                 $max  = $result[4];
             }
-            $field_name = $this->match_field($_k);
+            //temp
+            $field_name = $model->match_field($_k);
             foreach ($data as $_sk => $_sd)
             {
                 $has_set = isset($data[$_sk][$_k]);
@@ -49,7 +50,7 @@ class  Filter extends Object{
                 if ($required && $data[$_sk][$_k] == '')
                 {
 
-                    $this->_error(Lang::get("required_field"), $field_name);
+                    $this->_error($field_name.'不能为空！', $field_name);
 
                     return false;
                 }
@@ -77,13 +78,13 @@ class  Filter extends Object{
                     $strlen = strlen($value);
                     if ($min != 0 && $strlen < $min)
                     {
-                        $this->_error(Lang::get('autov_length_lt_min'), $field_name);
+                        $this->_error( "{$field_name}长度不能小于{$min}");
 
                         return false;
                     }
                     if ($max != 0 && $strlen > $max)
                     {
-                        $this->_error(Lang::get('autov_length_gt_max'), $field_name);
+                        $this->_error("{$field_name}长度不能大于{$min}");
 
                         return false;
                     }
@@ -92,13 +93,13 @@ class  Filter extends Object{
                 {
                     if ($min != 0 && $value < $min)
                     {
-                        $this->_error(Lang::get('autov_value_lt_min'), $field_name);
+                        $this->_error("{$field_name}不能小于{$min}");
 
                         return false;
                     }
                     if ($max != 0 && $value > $max)
                     {
-                        $this->_error(Lang::get('autov_value_gt_max'), $field_name);
+                        $this->_error("{$field_name}不能大于{$min}");
 
                         return false;
                     }
@@ -109,11 +110,11 @@ class  Filter extends Object{
                 {
                     if (!preg_match($reg, $value))
                     {
-                        $this->_error(Lang::get('check_match_error'), $field_name);
+                        $this->_error("{$field_name}不符合规则");
                         return false;
                     }
                 }
-
+                include_once(CORE_PATH."Common/Function/validator.php");
                 /* 自定义验证 */
                 if ($valid && function_exists($valid))
                 {

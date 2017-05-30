@@ -1,5 +1,6 @@
 <?php
-namespace  Framework\Base;
+namespace  Framework\Util;
+use \Framework\Base\Object;
 class Input extends Object{
 
     function Input(){

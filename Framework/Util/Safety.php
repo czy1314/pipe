@@ -6,8 +6,8 @@
 class Safety extends \Framework\Base\Object{
 
     function clean($val){
-        if(!empty($val)){
-            return $val;
+        if(empty($val)){
+            return '';
         }
         $val = $this->html_filter($this->html_script($this->remove_xss($val)));
         if($this->inject_check($val)){

@@ -153,7 +153,8 @@ class BaseController extends Object
         }else{
         	$get_ssid = '';
         }
-        $this->_session = new SessionProcessor($db, '`pipe_sessions`', '`pipe_sessions_data`', 'PIPE_ID',$get_ssid);
+        $table_name = defined('SESSION_TABLE_NAME') ? SESSION_TABLE_NAME: 'sessions';
+        $this->_session = new SessionProcessor($db, $table_name, $table_name.'_data', 'PIPE_ID',$get_ssid);
         define('SESS_ID', $this->_session->get_session_id());
         $this->_session->my_session_start();
     }
@@ -176,9 +177,8 @@ class BaseController extends Object
      *  @author LorenLei
      *  @return void
      */
-    function destruct()
-    {
-    	
+    function __destruct(){
+        collect_error();
     }
 
 

@@ -1,7 +1,6 @@
 <?php
 namespace  Application\User\Model;
 use \Framework\Model\BaseModel;
-/* 会员 member */
 class MemberModel extends BaseModel
 {
     var $table  = 'tbuser';
@@ -46,14 +45,22 @@ class MemberModel extends BaseModel
     );
 
     var $_autov = array(
-        'user_name' => array(
+        'sEmail' => array(
             'required'  => true,
             'filter'    => 'trim',
+            'valid' => 'is_email'
         ),
-        'password' => array(
+        'sPassword' => array(
             'required' => true,
             'filter'   => 'trim',
             'min'      => 6,
+            'max'=>20
+        ),
+        'sNickName' => array(
+            'required' => true,
+            'filter'   => 'trim',
+            'min'      => 1,
+            'max'      => 20,
         ),
     );
 

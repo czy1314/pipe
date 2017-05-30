@@ -22,6 +22,7 @@ defined('CACHE_SERVER') or define('CACHE_SERVER', 'default');
 defined('MEMBER_TYPE') or define('MEMBER_TYPE', 'default');
 defined('DEVELOPER') or define('DEVELOPER', 'nanfengq@sina.com');
 defined('SESSION_TYPE') or define('SESSION_TYPE', 'mysql');
+defined('SESSION_TABLE_NAME') or define('SESSION_TABLE_NAME', 'tbsessions');
 defined('SESSION_MEMCACHED') or define('SESSION_MEMCACHED', 'localhost:11211');
 defined('CACHE_MEMCACHED') or define('CACHE_MEMCACHED', 'localhost:11211');
 /* 记录程序启动时间 */
@@ -49,5 +50,8 @@ defined('BELONGS_TO') or define('BELONGS_TO', 2);                  //属于关�
 defined('HAS_MANY') or define('HAS_MANY', 3);                    //一对多关联
 defined('MANY_TO_MANY') or define('MANY_TO_MANY', 4);     //多对多关联
 defined('DROP_CONDITION_TRUNCATE') or define('DROP_CONDITION_TRUNCATE', 'TRUNCATE');  //清空
-
+/*错误和异常级别*/
+defined('ERROR_USER') or  define('ERROR_USER', 1);//开发人员自定逻辑错误，一般用户展示给用户的
+defined('ERROR_NOTICE') or  define('ERROR_NOTICE', 2);//警告级别错误，一般处理是记录日志，触发阀值则给管理员发邮件，一般没有展示
+defined('ERROR_FAITAL') or  define('ERROR_FAITAL', 3);//致命错误，一般处理是记录日志，直接给管理员发邮件，展示给用户为：系统繁忙
 ?>

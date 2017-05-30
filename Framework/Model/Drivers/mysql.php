@@ -9,7 +9,9 @@ if (!defined('PIPE'))
     trigger_error('Hacking attempt', E_USER_ERROR);
 }
 
-class PipeMysql
+use \Framework\Base\Object;
+use \Framework\Base\Lang;
+class PipeMysql extends Object
 {
     var $max_cache_time = 300; // 最大的缓存时间，以秒为单位
     var $cache_dir      = 'temp/query_caches/';
@@ -247,11 +249,7 @@ class PipeMysql
         }
 
         $sql = $this->prefix($sql); // 处理表名前缀
-        if(!SHOW_SQL){
-       		 echo '<pre>';
-            	echo $sql;
-            	echo '</pre>'; 
-        }    	
+        collect_error($sql);
         if (!($query = mysql_query($sql, $this->_link_id)))
         {   
         	
@@ -371,6 +369,42 @@ class PipeMysql
     function fetch_fields($query)
     {
         return mysql_fetch_field($query);
+    }
+    function table_fields($table)
+    {
+        $res = $this->query("select  column_name, column_comment from Information_schema.columns  where table_Name = '{$table}'");
+        if ($res !== false)
+        {
+            $arr = array();
+            while ($row = mysql_fetch_assoc($res))
+            {
+                $arr[$row['column_name']] = trim($row['column_comment']);
+            }
+
+            return $arr;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    function table_fields_more($table)
+    {
+        $res = $this->query("select  column_name, column_comment ,column_key ,column_type from Information_schema.columns  where table_Name = '{$table}'");
+        if ($res !== false)
+        {
+            $arr = array();
+            while ($row = mysql_fetch_assoc($res))
+            {
+                $arr[$row['column_name']] = $row;
+            }
+
+            return $arr;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     function version()
